@@ -60,7 +60,7 @@
             </div>
            </div>
 
-          </div><!-- fim select produtos ativo ou inativo -->
+          </div>
 
           <!-- Button submit(enviar) formulário -->
           <br />

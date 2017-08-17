@@ -3,18 +3,18 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Produtos extends CI_Controller {	
 	
-	//Página de listar produtos
+	//Página de listar clientes
 	public function index()
 	{					
 		//Carrega o Model Produto
 		$this->load->model('produtos_model', 'produtos');			
-		//Criamos um Array dados para armazenas os produtos
-		//Executamos a função no produtos_model getProdutos
+		//Cria um Array dados para armazenas os clientes
+		//Executa a função no produtos_model getProdutos
 		$data['produtos'] = $this->produtos->getProdutos();
 		//Carregamos a view listarprodutos e passamos como parametro a array produtos que guarda todos os produtos da db produtos
 		$this->load->view('listarprodutos', $data);
 	}
-	//Página de adicionar produto
+	//Página de adicionar clientes
 	public function add()
 	{	
 		//Carrega o Model Produtos				
@@ -24,10 +24,10 @@ class Produtos extends CI_Controller {
 	}
 
 
-	//Página de editar produto
+	//Página de editar clientes
 	public function editar($id=NULL)	
 	{						
-	//Verifica se foi passado um ID, se não vai para a página listar produtos
+	//Verifica se foi passado um ID, se não vai para a página listar clientes
 	if($id == NULL) {
 		redirect('/');
 	}
@@ -49,37 +49,14 @@ class Produtos extends CI_Controller {
 	//Carrega a View
 	$this->load->view('editarProdutos', $dados);		
 }
-
-	//Função salvar no DB
-/*	public function salvar()
-	{
-		//Verifica se foi passado o campo nome vazio.
-		if ($this->input->post('nome') == NULL || $this->input->post('email') == NULL || $this->input->post('endereco') == NULL) {
-			echo 'O compo nome do Cliente é obrigatório.';
-			echo '<a href="/produtos/add" title="voltar">Voltar</a>';
-		} else	 {
-			//Carrega o Model Produtos				
-			$this->load->model('produtos_model', 'produtos');
-			//Pega dados do post e guarda na array $dados
-			$dados['nome'] = $this->input->post('nome');
-			$dados['email'] = $this->input->post('email');
-			$dados['endereco'] = $this->input->post('endereco');		
-			
-			//Executa a função do produtos_model adicionar
-			$this->produtos->addProduto($dados);
-			//Fazemos um redicionamento para a página 		
-			redirect("/");	
-		}		
-	}
-		*/
-
-
 		public function salvar()
 	{
-		//Verifica se foi passado o campo nome vazio.
-		if ($this->input->post('nome') == NULL) {
-			echo 'O compo nome do Cliente é obrigatório.';
-			echo 'Voltar';
+		//Verifica se foi passado campo vazio.
+		if ($this->input->post('nome') == NULL || $this->input->post('email') == NULL || $this->input->post('endereco') == NULL) {
+
+ 		$acao = "não foi realizado devido ao não preenchimento de todos os campos";
+
+		
 		} else {
 			//Carrega o Model Produtos				
 			$this->load->model('produtos_model', 'produtos');
@@ -97,10 +74,44 @@ class Produtos extends CI_Controller {
 				//Se Não foi passado id ele adiciona um novo registro
 				$this->produtos->addProduto($dados);
 			}	
-						
-			//Fazemos um redicionamento para a página 		
-			redirect("/");	
-		}		
+				
+			$acao = "foi realizado com sucesso!";
+
+
+		}
+
+		$msg['msg'] = '<script> alert("O seu cadastro/alteração '.$acao.' ") </script>';	
+		
+		$this->load->view('addProdutos',$msg);
+
+
+	}
+
+	//Função Apagar registro
+	public function apagar($id=NULL)
+	{
+		//Verifica se foi passado um ID, se não vai para a página listar clientes
+		if($id == NULL) {
+			redirect('/');
+		}
+
+		//Carrega o Model Produtos				
+		$this->load->model('produtos_model', 'produtos');
+
+		//Faz a consulta no banco de dados pra verificar se existe
+		$query = $this->produtos->getClienteByID($id);
+
+		//Verifica se foi encontrado um registro com a ID passada
+		if($query != NULL) {
+			
+			//Executa a função apagarClientes do produtos_model
+			$this->produtos->apagarCliente($query->id);
+			redirect('/');
+
+		} else {
+			//Se não encontrou nenhum registro no banco de dados com a ID passada ele volta para página listar clientes
+			redirect('http://crud.procedo.com.br/produtos/add');
+		}	
 	}
 
 

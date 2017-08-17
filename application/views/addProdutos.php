@@ -1,5 +1,8 @@
 <?php
 //	defined('BASEPATH') OR exit('No direct script access allowed');
+if (!empty($msg)) {
+ echo $msg;
+}
 ?>
 
 <!DOCTYPE html>
@@ -44,7 +47,7 @@
               <label>Nome</label>
               <input type="text" name="nome" value="" class="form-control">
             </div>
-          </div> <!-- fim input text nome produtos -->
+          </div> <!-- fim input text nome clientes -->
 
           <!-- Input text email do cliente -->
           <div class="row">
@@ -60,7 +63,7 @@
             </div>
            </div>
 
-          </div><!-- fim select produtos ativo ou inativo -->
+          </div>
 
           <!-- Button submit(enviar) formulário -->
           <br />
